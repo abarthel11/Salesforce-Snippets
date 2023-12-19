@@ -1,0 +1,59 @@
+<!--
+    @description       : 
+    @author            : Austin Barthel
+    @group             : Cloud Coach
+    @last modified on  : 12-18-2023
+    @last modified by  : Austin Barthel
+-->
+<apex:page standardController="Opportunity" extensions="CreateOppQuoteController" lightningStyleSheets="true" standardStylesheets="false" showHeader="false" sidebar="false" docType="html-5.0">
+    <apex:includeLightning />
+
+    <!-- <apex:form>
+        <apex:actionfunction name="navigateToOpp"  action="{!navigateToOpp}" >
+            <apex:param assignTo="oppId" value="{!Opportunity.Id}" />
+        </apex:actionfunction>
+    </apex:form> -->
+
+    <div id="LightningAppDivId">
+        <!-- Lightning Web Component will be included here. -->
+    </div>
+
+    <script>
+        document.addEventListener('navigatetoopp', function(event){
+            console.log('vf event data window listener =>');
+        });
+
+        $Lightning.use(
+        "c:createOppQuotePageWrapper", // Name of Aura Dependency app where c is namespace.
+        function() { // Callback function
+            $Lightning.createComponent(
+            "c:createOppQuote", // Name of Lightning Component where c is namespace.
+            {
+                "recordId": "{!Opportunity.Id}",
+                "oppName": "{!Opportunity.Name}"
+            }, // attribute parameters
+            "LightningAppDivId",
+            function(cmp) {
+                document.querySelector('c-create-opp-quote').addEventListener('navigatetoopp', function(event){
+                    console.log('vf event data window listener =>');
+                    // navigateToOpp();
+                    // Visualforce.remoting.Manager.invokeAction(
+                    //     "{!$RemoteAction.CreateOppQuoteController.navigateToOpp}",
+                    //     {
+                    //         apexType: 'c.CreateOppQuoteController.NavigateInterface',
+                    //         interfaceId: "{!Opportunity.Id}"
+                    //     }
+                    // );
+                    CreateOppQuoteController.navigateToOpp("{!Opportunity.Id}", function(result, event){
+                        
+                    });
+                });
+                console.log('calling LWC component');
+            }
+            );
+        }
+        );
+
+        function handleResult(result, event){}
+    </script>
+</apex:page>
